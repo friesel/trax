@@ -30,15 +30,15 @@ class RMSProp(opt_base.Optimizer):
         eps=eps,
     )
 
-  def init(self, params):
-    return np.ones_like(params)
+  def init(self, weights):
+    return np.ones_like(weights)
 
   def update(self, step, grads, weights, avg_sq_grad, opt_params):
     del step
-    learning_rate = opt_params['learning_rate']
+    lr = opt_params['learning_rate']
     gamma = opt_params['gamma']
     eps = opt_params['eps']
     avg_sq_grad = avg_sq_grad * gamma + grads**2 * (1. - gamma)
-    weights = weights - (learning_rate * grads /
+    weights = weights - (lr * grads /
                          (np.sqrt(avg_sq_grad) + eps)).astype(weights.dtype)
     return weights, avg_sq_grad
